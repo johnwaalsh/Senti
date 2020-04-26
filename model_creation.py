@@ -5,10 +5,11 @@ from string import punctuation
 from keras.preprocessing import sequence
 from keras import Sequential
 from keras.layers import Embedding, LSTM, Dense
-from main import vectorize, word_min_length, max_words as max_words_per_review
 
 # Represents the number of unique words we will use in our counter
 words = 15000
+word_min_length = 3
+max_words_per_review = 1500
 
 # Extracts the text files and respective labels from the given path and shuffles them
 def extract_reviews(file):
@@ -55,6 +56,18 @@ for num, word in enumerate(total_words, 1):
     else:
         break
 
+# Encodes the given text files
+def vectorize(text_data, ranking):
+    text_data_vectorized = []
+    for review in text_data:
+        review_vectorized = []
+        for word in review:
+            rank = ranking.get(word, 0)
+            if rank != 0:
+                review_vectorized.append(rank)
+        text_data_vectorized.append(review_vectorized)
+    return text_data_vectorized
+
 # Encode the training and testing data
 X_train_vectorized = vectorize(X_train, ranking)
 X_test_vectorized = vectorize(X_test, ranking)
@@ -85,7 +98,7 @@ model.fit(X_training, Y_training, validation_data=(X_val, Y_val), batch_size=bat
 # Judge model accuracy based on the testing data, and save the model
 scores = model.evaluate(X_test, Y_test)
 print('Test Accuracy:', scores[1])
-model.save("sentiment_analysis_5.h5")
+model.save("sentiment_analysis_2.h5")
 np.save("ranking.npy", ranking)
 
 

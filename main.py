@@ -1,6 +1,6 @@
+import sys
 import numpy as np
 from string import punctuation
-import sys
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from keras.models import load_model
