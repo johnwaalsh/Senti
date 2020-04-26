@@ -6,22 +6,30 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from keras.models import load_model
 from keras.preprocessing import sequence
 
-# Do not change these unless you create a new model
+# Parameters set for the pre-trained model, do not change these unless you create 
+# a new model
 word_min_length = 3
 max_words = 1500
 
+# This file is specific to each individual user, must be downloaded from Google
+# Cloud
 client_secret_file = "client_secret.json"
 
+# API specifics
 scopes = ['https://www.googleapis.com/auth/youtube.force-ssl']
 api_service_name = 'youtube'
 api_version = 'v3'
 
+# Build the service using the user's credentials
 app_flow = InstalledAppFlow.from_client_secrets_file(client_secret_file, scopes)
 credentials = app_flow.run_console()
 service = build(api_service_name, api_version, credentials = credentials)
 
+# The maximum number of comments on a video, should be set to correspond with the
+# Youtube API's daily quota (10,000 units for most acounts)
 max_num_comments = 7500
 
+# Retrieves all of the comments from the specified video
 def get_video_comments(service, **kwargs):
     comments = []
     results = service.commentThreads().list(**kwargs).execute()
@@ -48,6 +56,11 @@ def get_video_comments(service, **kwargs):
  
     return comments
 
+# Loads the pre-trained ranking dictionary
+ranking = np.load('ranking.npy').item()
+
+# Calculates the prediction scores for the comments on the given video ID using
+# the given model path
 def calculate_scores(video_id, model_path):
     comments = get_video_comments(service, part='snippet', videoId=video_id, textFormat='plainText', maxResults = 100)
     X_data = []
@@ -60,7 +73,7 @@ def calculate_scores(video_id, model_path):
                 new_text.append(word)
         X_data.append(new_text)
         
-    X_data_vectorized = vectorize(X_data)
+    X_data_vectorized = vectorize(X_data, ranking)
     X_data_vectorized = sequence.pad_sequences(X_data_vectorized, maxlen = max_words)
     
     model = load_model(model_path)
@@ -81,8 +94,6 @@ def calculate_scores(video_id, model_path):
                                                   sorted_comments[len(sorted_comments)-3][0], 
                                                   sorted_comments[len(sorted_comments)-3][1]))
 
-ranking = np.load('ranking.npy', load_pickle = 'TRUE').item()
-
 # Encodes the given text files
 def vectorize(text_data, ranking):
     text_data_vectorized = []
@@ -95,6 +106,7 @@ def vectorize(text_data, ranking):
         text_data_vectorized.append(review_vectorized)
     return text_data_vectorized
 
+# Converts the given score to a sentiment
 def score_to_sentiment(i):
     if i > 0.6:
         return "Positive"
@@ -102,9 +114,6 @@ def score_to_sentiment(i):
         return "Negative"
     else:
         return "Neutral"
-    
-calculate_scores(sys.argv[0], sys.argv[1])
-    
 
-    
-
+# Runs for the given video ID and model ("sentiment_analysis.h5" is pre-trained)
+calculate_scores(sys.argv[1], sys.argv[2])
