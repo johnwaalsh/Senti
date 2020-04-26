@@ -5,7 +5,10 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from keras.models import load_model
 from keras.preprocessing import sequence
-from model_creation import word_min_length, max_words, vectorize
+
+# Do not change these unless you create a new model
+word_min_length = 3
+max_words = 1500
 
 client_secret_file = "client_secret.json"
 
@@ -77,6 +80,20 @@ def calculate_scores(video_id, model_path):
                                                   sorted_comments[len(sorted_comments)-2][1], 
                                                   sorted_comments[len(sorted_comments)-3][0], 
                                                   sorted_comments[len(sorted_comments)-3][1]))
+
+ranking = np.load('ranking.npy', load_pickle = 'TRUE').item()
+
+# Encodes the given text files
+def vectorize(text_data, ranking):
+    text_data_vectorized = []
+    for review in text_data:
+        review_vectorized = []
+        for word in review:
+            rank = ranking.get(word, 0)
+            if rank != 0:
+                review_vectorized.append(rank)
+        text_data_vectorized.append(review_vectorized)
+    return text_data_vectorized
 
 def score_to_sentiment(i):
     if i > 0.6:
