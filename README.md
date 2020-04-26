@@ -1,4 +1,4 @@
-# YT-Comment-Sentiment
+# YT-Comments-Sentiment
 Sentiment analysis of Youtube comment sections using an LSTM and the Youtube API. Uses a Long Short Term Memory network (LSTM) trained on 
 Stanford AI Lab's Large Movie Review Dataset, which contains 50,000 polarized movie reviews labeled as either positive or negative. The 
 model is able to achieve ~86% testing accuracy with the movie review dataset. Once the model is trained, comments are scraped via the
