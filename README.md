@@ -2,11 +2,12 @@
 Sentiment analysis of Youtube comment sections using an LSTM (Keras) and the Youtube API. This uses a Long Short Term Memory network (LSTM), a type of recurrent neural network designed to analyze data step-by-step while maintaining previous information long-term. LSTMs are popular in Natural Language Processing as they can retain crucial information such as subjects and context as they recur through sentences. The LSTM is trained on Stanford AI Lab's Large Movie Review Dataset, which contains 50,000 polarized movie reviews labeled as either positive or negative. The trained model is able to achieve ~86% testing accuracy with the movie review dataset. Once the model is trained, comments are scraped via the Youtube Data API v3 from the Youtube video specified by URL. Each comment is analyzed with the LSTM and the overall averages and top positive/negative comments are displayed.
 
 ## Installations
-To run this, you will need to install keras and the Google api client library. This can be done with conda:
+To run this, you will need to install Keras, the Google api client library, and Matplotlib. This can be done with conda:
 ```
 conda install -c anaconda keras
 conda install -c conda-forge google-api-python-client
 conda install -c conda-forge google-auth-oauthlib
+conda install -c conda-forge matplotlib
 ```
 ## Obtaining Credentials
 Youtube's API has a daily quota limit for each account that uses it. This step requires a Youtube (Google) account. To obtain credentials, you will need to go to https://console.cloud.google.com/. From there:
