@@ -1,8 +1,8 @@
 import sys
 import numpy as np
 from string import punctuation
-import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from keras.models import load_model
@@ -40,14 +40,14 @@ def get_video_comments(service, **kwargs):
     while total_comments < (max_num_comments / 100):
         for item in results['items']:
             comment = item['snippet']['topLevelComment']['snippet']['textDisplay']
+            comment = preprocess(comment)
             comments.append(comment)
             replies = service.comments().list(part = 'snippet', parentId = item['id']).execute()
             if len(replies['items']) != 0:
                 for reply in replies['items']:
-                    comment = reply['snippet']['textDisplay']
-                    comment = comment.replace("&#39;", "'")
-                    comment = comment.replace("\\n", " ").replace("\\r", " ")
-                    comments.append(comment)
+                    r = reply['snippet']['textDisplay']
+                    r = preprocess(r)
+                    comments.append(r)
         
         total_comments += 100
         if 'nextPageToken' in results:
@@ -57,6 +57,9 @@ def get_video_comments(service, **kwargs):
             break
  
     return comments
+
+def preprocess(s):
+    return s.replace("&#39;", "'").replace("\n", " ")
 
 # Loads the pre-trained ranking dictionary
 ranking = np.load('ranking.npy').item()
@@ -103,7 +106,7 @@ def score_to_sentiment(i):
         return "Neutral"
 
 # Runs for the given video ID and model ("sentiment_analysis.h5" is pre-trained)
-comments = comments = get_video_comments(service, part='snippet', videoId=sys.argv[1], textFormat='plainText', maxResults = 100)
+comments = get_video_comments(service, part='snippet', videoId=sys.argv[1], textFormat='plainText', maxResults = 100)
 scores = calculate_scores(comments, sys.argv[2])
 avg = np.average(scores)
 sorted_comments = sorted(zip(scores, comments), reverse=True)
@@ -192,8 +195,6 @@ set_comments(neg_comments, 1040)
 
 # Title with the video ID
 fig.suptitle("Sentiment Analysis of \"{}\"".format(sys.argv[1]), y = 0.9, fontsize=18)
-
-# Adjust the bottom and show the data
+   
 plt.subplots_adjust(bottom=0.05)
 plt.show()
-
