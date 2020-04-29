@@ -36,8 +36,11 @@ Running main.py will return a dashboard of the comment section sentiments includ
 Some interesting examples:
 
 [Bjarne Stroustrup - The Essence of C++](https://www.youtube.com/watch?v=86xWVb4XIyE)
-![Essence of C++ Analysis](https://github.com/johnwaalsh/YT-Comments-Sentiment/blob/master/visualizations/sent_lecture.PNG)
+![Essence of C++ Analysis](https://github.com/johnwaalsh/Senti/blob/master/visualizations/sent_lecture.PNG)
 
+
+[Productive Music Playlist | 1.5 Hour Mix | January 2020 | #EntVibes](https://www.youtube.com/watch?v=HN-MXjDC5Hk)
+![Productive Music Analysis](https://github.com/johnwaalsh/Senti/blob/master/visualizations/sent-productive.PNG)
 
 
 
