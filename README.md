@@ -36,7 +36,7 @@ Running main.py will return a dashboard of the comment section sentiments includ
 Some interesting examples:
 
 [Bjarne Stroustrup - The Essence of C++](https://www.youtube.com/watch?v=86xWVb4XIyE)
-![Essence of C++ Analysis](https://github.com/johnwaalsh/YT-Comments-Sentiment/blob/master/dashboards/sent_lecture.PNG)
+![Essence of C++ Analysis](https://github.com/johnwaalsh/YT-Comments-Sentiment/blob/master/visualizations/sent_lecture.PNG)
 
 
 
