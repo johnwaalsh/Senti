@@ -27,11 +27,11 @@ py main.py "[insert videoID here]" "sentiment_analysis.h5"
 ```
 If you want to use an alternate model, enter the alternate model's name for the second argument. You may have to change some parameters in the main file, so the comments are preprocessed in the same way as the training data for the alternate model. 
 Running main.py will return a dashboard of the comment section sentiments including:
-2. **Overall Average Sentiment**, on a scale from 0 (negative) to 1 (positive). Values below 0.4 are considered negative, values between 0.4 and 0.6 inclusive are considered neutral, and values above 0.6 are considered positive. 
-2. **Sentiment Proportions** shown in the form of a pie chart, displaying what proportion of the comments were positive, neutral, and negative.
-2. **Sentiment Distribution**, shown in the form of a histogram, with each comment counting as a unique data point.
-2. **Top 3 Positive Comments**, based on the highest calculated sentiment scores, and truncated to 2 or 3 lines.
-2. **Top 3 Negative Comments**, based on the lowest calculated sentiment scores, and also truncated to 2 or 3 lines.
+1. **Overall Average Sentiment**, on a scale from 0 (negative) to 1 (positive). Values below 0.4 are considered negative, values between 0.4 and 0.6 inclusive are considered neutral, and values above 0.6 are considered positive. 
+1. **Sentiment Proportions** shown in the form of a pie chart, displaying what proportion of the comments were positive, neutral, and negative.
+1. **Sentiment Distribution**, shown in the form of a histogram, with each comment counting as a unique data point.
+1. **Top 3 Most Positive Comments**, based on the highest calculated sentiment scores, and truncated to 2-3 lines.
+1. **Top 3 Most Negative Comments**, based on the lowest calculated sentiment scores, and also truncated to 2-3 lines.
 
 Some interesting examples:
 
