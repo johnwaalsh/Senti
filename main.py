@@ -182,6 +182,7 @@ neg_comments = create_comments(len(sorted_comments) - 1, len(sorted_comments) - 
 
 # Determine the distance to the bottom of the screen (for positioning comments)
 distance_to_bottom = max(sum([h for c, h in pos_comments]), sum([h for c, h in neg_comments])) + 80
+distance_to_bottom = max(distance_to_bottom, 250)
 
 # Sets the comments to their correct position depending on screen size
 def set_comments(comments, x):   
